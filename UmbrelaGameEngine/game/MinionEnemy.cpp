@@ -29,7 +29,7 @@ void MinionEnemy::onUpdate(float deltatime, GLFWwindow* window)
 			for (float angle = 0.0f; angle <= 360; angle += 30.0f)
 			{
 				std::shared_ptr<Entity> bullet = std::make_shared<Bullet>(m_enemyBulletSprite, glm::vec2(m_position.x, m_position.y - m_size.y / 2), glm::vec2(10.0f, 10.0f),
-					glm::vec2(cos(glm::radians(angle)), sin(glm::radians(angle))), 200.0f, glm::vec4(0.0f, 0.44f, 0.67f, 1.0f));
+					glm::vec2(cos(glm::radians(angle)), sin(glm::radians(angle))), 150.0f, glm::vec4(0.0f, 0.44f, 0.67f, 1.0f));
 				EntityManager::pushEnemiesBullets(bullet);
 				EntityManager::addEntity(bullet);
 			}
