@@ -2,7 +2,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "../game/game.h"
 #include <algorithm>
 
 std::vector<std::shared_ptr<Entity>> EntityManager::m_Entities;

@@ -1,0 +1,2 @@
+D:/Programare Cock++/OpenGL/Precognition/Dependencies/GLFW/include/glm/out/build/x64-Debug (default)/CMakeFiles/edit_cache.dir
+D:/Programare Cock++/OpenGL/Precognition/Dependencies/GLFW/include/glm/out/build/x64-Debug (default)/CMakeFiles/rebuild_cache.dir

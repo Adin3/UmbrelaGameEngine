@@ -6,11 +6,10 @@
 #include "../gfx/graphics.h"
 #include "Init.h"
 #include "Application.h"
-#include "../game/game.h"
+#include "../sandbox/Sandbox.h"
 
 const int WND_WIDTH = 1300;
 const int WND_HEIGHT = 1000;
-//unsigned int tudy = TextureManager::LoadTexture("gfx/img/sprites/enemies/tposetudy.png");
 
 int main()
 {
@@ -20,7 +19,7 @@ int main()
 	<< "I hope you'll enjoy it\n"
 	<< ":)"
 	<< "\n";
-	Application* app = new Game("Precognition", WND_WIDTH, WND_HEIGHT);
+	Application* app = new Sandbox("Precognition", WND_WIDTH, WND_HEIGHT);
 	app->Run();
 
 	delete app;
