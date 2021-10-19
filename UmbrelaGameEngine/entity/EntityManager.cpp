@@ -36,13 +36,13 @@ void EntityManager::cleanEntity()
 	m_player.reset();
 }
 
-void EntityManager::updateEntities(float deltaTime, GLFWwindow* window)
+void EntityManager::updateEntities(float deltaTime)
 {
 	for (int i = 0; i < m_Entities.size(); i++)
 	{
 		if (m_Entities[i])
 		{
-			m_Entities[i]->onUpdate(deltaTime, window);
+			m_Entities[i]->onUpdate(deltaTime);
 		}
 	}
 

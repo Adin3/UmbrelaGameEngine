@@ -5,13 +5,13 @@
 
 class Camera {
 private:
-	glm::vec3 m_cameraPos;
-	glm::vec2 m_position;
+	glm::vec3 m_cameraPos3D;
+	glm::vec3 m_cameraPos2D;
 	glm::mat4 m_perspectiveOrtho;
 	glm::mat4 m_pv;
 	float m_ZoomLv = 1.0f;
 public:
-	Camera();
+	Camera(float width, float height);
 	~Camera();
-	glm::mat4 getView(GLFWwindow* window, float deltaTime);
+	glm::mat4 getView(float deltaTime);
 };

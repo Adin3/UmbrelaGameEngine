@@ -1,0 +1,45 @@
+<---Calendar--->
+
+
+7/8/2021
+*GLFW setup
+
+8/8/2021
+*GLAD setup
+
+9/8/2021
+*Shaders and buffers added
+
+10/8/2021
+*Textures added
+
+14/8/2021
+*MVP vectors and matrices added
+
+21/8/2021
+*Starting to abstract VBO,VAO,EBO
+*Basic Renderer created
+
+22/8/2021
+*God class Application created
+
+28/8/2021
+*Camera class created
+
+30/8/2021
+*changed basic Renderer into batch renderer
+
+5/9/2021
+*my first game in the engine finished (28th place/110)
+
+11/9/2021
+*premake added
+
+10/10/2021
+*Input class finished
+
+13/10/2021
+*ImGui added
+
+
+

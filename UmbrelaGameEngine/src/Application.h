@@ -3,6 +3,8 @@
 #include <memory>
 #include <GLFW/glfw3.h>
 #include "../misc/Camera.h"
+#include "../misc/Input.h"
+#include <string>
 
 class Application {
 private:
@@ -13,13 +15,13 @@ public:
 	 virtual ~Application();
 	 void Run();
 	 void GetDeltaTime();
+	 std::string ChangeTitle();
 	 virtual void onCreate() { }
 	 virtual void onUpdate(float deltaTime) { }
 	 virtual void onDestory() { }
-
-
+	 static GLFWwindow* GetWindow();
 protected:
-	GLFWwindow* m_Window;
+	static GLFWwindow* m_Window;
 	std::shared_ptr<Renderer> m_Context;
 	std::shared_ptr<Camera> m_Camera;
 };

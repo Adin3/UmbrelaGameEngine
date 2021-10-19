@@ -15,8 +15,9 @@ private:
 public:
 	Entity(const std::string& string, glm::vec2 position, glm::vec2 size);
 	Entity(const unsigned int sprite, glm::vec2 position, glm::vec2 size);
+	Entity(glm::vec2 position, glm::vec2 size);
 	virtual void onCreate() { }
-	virtual void onUpdate(float deltatime, GLFWwindow* window) { }
+	virtual void onUpdate(float deltatime) { }
 	virtual void getCollisionPos() { }
 	bool IsAlive() const { return m_health <= 0; }
 
@@ -28,6 +29,8 @@ protected:
 	unsigned int m_sprite;
 	float m_speed = 350.0f;
 	float m_damage = 1.0f;
+	float m_finalTime = 1.0f;
+	float m_lastTime = 0.0f;
 	bool isCollided = false;
 	int m_health = 4;
 };

@@ -147,10 +147,7 @@ Renderer::Renderer()
 	srand(time(NULL));
 	s_data.rendererBuffer = new Vertex[maxVertices];
 	shader = std::make_shared<Shader>("gfx/shader/rec/vshader.vs", "gfx/shader/rec/fshader.fs");
-	/*texture = std::make_shared<TextureManager>();
-	s_data.padoru = texture->LoadTexture("gfx/shader/rec/padoruknight.png");
-	s_data.padoru1 = texture->LoadTexture("gfx/shader/rec/hud.png");*/
-
+	
 	int sampler[32];
 	for (int i = 0; i < 32; i++) sampler[i] = i;
 	shader->use();
@@ -204,7 +201,8 @@ void Renderer::Draw(glm::mat4 view)
 
 void Renderer::Clear()
 {
-	glClearColor(0.12f, 0.72f, 0.72f, 0.0f);
+	//glClearColor(0.12f, 0.72f, 0.72f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 

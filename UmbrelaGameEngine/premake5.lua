@@ -12,6 +12,8 @@ project "UmbrelaGameEngine"
 		"vendor/**.cpp",
 		"vendor/**.h",
 		"vendor/**.c",
+		"vendor/imgui/**.h",
+		"vendor/imgui/**.cpp",
 		"src/**.cpp",
 		"src/**.h",
 		"misc/**.cpp",
@@ -22,6 +24,8 @@ project "UmbrelaGameEngine"
 		"gfx/**.h",
 		"gfx/shader/**.cpp",
 		"gfx/shader/**.h",
+		"sandbox/**.cpp",
+		"sandbox/**.h",
 	}
 	
 	includedirs 

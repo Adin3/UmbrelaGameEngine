@@ -8,18 +8,12 @@
 #include "Application.h"
 #include "../sandbox/Sandbox.h"
 
-const int WND_WIDTH = 1300;
-const int WND_HEIGHT = 1000;
+const int WND_WIDTH = 750;
+const int WND_HEIGHT = 750;
 
 int main()
 {
-	std::cout 
-	<< "Game made with opengl for the olcCodeJam2021\n" 
-	<< " \n"
-	<< "I hope you'll enjoy it\n"
-	<< ":)"
-	<< "\n";
-	Application* app = new Sandbox("Precognition", WND_WIDTH, WND_HEIGHT);
+	Application* app = new Sandbox("Physics", WND_WIDTH, WND_HEIGHT);
 	app->Run();
 
 	delete app;

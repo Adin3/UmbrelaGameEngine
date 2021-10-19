@@ -19,7 +19,7 @@ public:
 	static void removeEntity(const std::shared_ptr<Entity>& entity);
 	static void cleanEntity();
 
-	static void updateEntities(float deltaTime, GLFWwindow* window);
+	static void updateEntities(float deltaTime);
 	static void pushEnemies(const std::shared_ptr<Entity>& entity);
 	static void pushLowEnemies(const std::shared_ptr<Entity>& entity);
 	static void pushEnemiesBullets(const std::shared_ptr<Entity>& entity);
