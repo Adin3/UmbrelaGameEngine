@@ -22,10 +22,8 @@ project "UmbrelaGameEngine"
 		"entity/**.h",
 		"gfx/**.cpp",
 		"gfx/**.h",
-		"gfx/shader/**.cpp",
-		"gfx/shader/**.h",
-		"sandbox/**.cpp",
-		"sandbox/**.h",
+		"shader/**.h",
+		"shader/**.cpp",
 	}
 	
 	includedirs 

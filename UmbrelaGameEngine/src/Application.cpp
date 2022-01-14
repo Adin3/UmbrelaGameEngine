@@ -8,7 +8,6 @@
 
 GLFWwindow* Application::m_Window;
 
-
 void processInput(GLFWwindow* window)
 {
 	for (auto& key : Input::keyList) {
@@ -24,7 +23,10 @@ Application::Application(const char* string, const int width, const int height)
 {
 	m_Window = Init(string, width, height);
 	m_Context = std::make_shared<Renderer>();
-	m_Camera = std::make_shared<Camera>(width, height);
+	m_Context->GL_ENABLE();
+	title = string;
+	m_width = width;
+	m_height = height;
 }
 
 Application::~Application()
@@ -38,6 +40,7 @@ Application::~Application()
 
 void Application::Run()
 {
+	glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	m_Context->Clear();
 	onCreate();
 	IMGUI_CHECKVERSION();
@@ -59,10 +62,8 @@ void Application::Run()
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui::NewFrame();
 
-		Renderer::BeginBatch();
-		m_Context->Draw(m_Camera->getView(m_deltaTime));
+		m_Context->Draw(m_width, m_height, m_deltaTime);
 		onUpdate(m_deltaTime);
-		Renderer::EndBatch();
 
 		/*ImGui::Begin("Setari");
 		ImGui::Text("TEXT");
@@ -91,6 +92,7 @@ void Application::GetDeltaTime()
 std::string Application::ChangeTitle()
 {
 	int FPS = 1 / m_deltaTime;
-	std::string str = "Physics - " + std::to_string(FPS); 
+	std::string str = title + " ";
+	str = str + std::to_string(FPS);
 	return str;
 }

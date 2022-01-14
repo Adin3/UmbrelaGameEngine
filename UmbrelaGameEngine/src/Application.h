@@ -1,15 +1,20 @@
 #pragma once
 #include "../gfx/graphics.h"
+#include "../gfx/Renderer.h"
 #include <memory>
 #include <GLFW/glfw3.h>
-#include "../misc/Camera.h"
 #include "../misc/Input.h"
 #include <string>
+
+class Renderer;
 
 class Application {
 private:
 	float m_deltaTime;
 	float m_lastFrame;
+	unsigned int m_height;
+	unsigned int m_width;
+	std::string title;
 public:
 	 Application(const char* string, const int width, const int height);
 	 virtual ~Application();
@@ -23,5 +28,4 @@ public:
 protected:
 	static GLFWwindow* m_Window;
 	std::shared_ptr<Renderer> m_Context;
-	std::shared_ptr<Camera> m_Camera;
 };

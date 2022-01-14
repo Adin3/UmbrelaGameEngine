@@ -1,6 +1,6 @@
 #pragma once
 #include "../src/Application.h"
-#include <map>
+#include <unordered_map>
 
 struct KeyProp {
 	bool current, previous;

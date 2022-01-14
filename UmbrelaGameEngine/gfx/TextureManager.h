@@ -1,5 +1,4 @@
 #pragma once
-#include "Renderer.h"
 #include "graphics.h"
 #include <array>
 #include <unordered_map>

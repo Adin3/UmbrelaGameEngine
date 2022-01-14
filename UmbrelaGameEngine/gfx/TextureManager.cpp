@@ -37,6 +37,9 @@ GLuint TextureManager::LoadTexture(const std::string& path)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
+	else std::cout << "TEXTURE NOT FOUND - " + path << std::endl;
+	if (stbi_failure_reason())
+		std::cout << stbi_failure_reason();
 	stbi_image_free(data);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
