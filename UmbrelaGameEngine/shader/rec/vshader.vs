@@ -1,18 +1,19 @@
+//VERTEX SHADER
+
 #version 450 core
 layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec4 aColor;
-layout (location = 2) in vec2 aTexCoords;
-
-out vec2 ourTexCoords;
-out vec4 ourColor;
+layout (location = 1) in vec3 aNormal;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 perspective;
+out vec3 Normal;
+out vec3 FragPos;
 
 void main()
 {
-    gl_Position = model * vec4(aPos, 1.0);
-	ourTexCoords = aTexCoords;
-	ourColor = aColor;
+    mat4 mvp = perspective * view * model;
+    gl_Position = mvp * vec4(aPos, 1.0);
+    FragPos = vec3(model * vec4(aPos, 1.0));
+    Normal = aNormal;
 }

@@ -5,8 +5,10 @@
 
 class Renderer {
 private:
-	unsigned int VBO, VAO, EBO;
+	unsigned int VAO, lightVAO;
+	unsigned int VBO, EBO;
 	std::shared_ptr<Shader> ourShader;
+	std::shared_ptr<Shader> lightShader;
 public:
 	Renderer();
 	~Renderer();
