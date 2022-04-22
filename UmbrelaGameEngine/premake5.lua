@@ -40,7 +40,7 @@ project "UmbrelaGameEngine"
 	{
 		"glfw3.lib",
 		"opengl32.lib",
-		"assimp-vc143-mtd.lib",
+		"assimp.lib",
 		--"user32.lib",
 		--"kernel32.lib",
 		--"shell32.lib",

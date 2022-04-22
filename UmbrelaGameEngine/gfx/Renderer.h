@@ -2,6 +2,7 @@
 #include "graphics.h"
 #include "GLFW/glfw3.h"
 #include "../misc/Input.h"
+#include "Model.h"
 
 class Renderer {
 private:
@@ -9,6 +10,9 @@ private:
 	unsigned int VBO, EBO;
 	std::shared_ptr<Shader> ourShader;
 	std::shared_ptr<Shader> lightShader;
+	std::shared_ptr<Model> ourModel;
+	unsigned int diffuseMap;
+	unsigned int specularMap;
 public:
 	Renderer();
 	~Renderer();

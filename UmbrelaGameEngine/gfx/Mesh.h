@@ -11,6 +11,7 @@ struct Vertex {
 struct Texture {
 	unsigned int  id;
 	std::string type;
+	std::string path;
 };
 
 class Mesh {
@@ -25,5 +26,5 @@ public:
 	std::vector<Texture> textures;
 	
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
-	void Draw(Shader& shader);
+	void Draw(std::shared_ptr<Shader>& shader);
 };

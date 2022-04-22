@@ -30,6 +30,9 @@
     <ClInclude Include="entity\EntityManager.h">
       <Filter>entity</Filter>
     </ClInclude>
+    <ClInclude Include="gfx\Renderer.h">
+      <Filter>gfx</Filter>
+    </ClInclude>
     <ClInclude Include="gfx\TextureManager.h">
       <Filter>gfx</Filter>
     </ClInclude>
@@ -41,6 +44,9 @@
     </ClInclude>
     <ClInclude Include="shader\shader.h">
       <Filter>shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Application.h">
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Init.h">
       <Filter>src</Filter>
@@ -75,8 +81,7 @@
     <ClInclude Include="vendor\stb_image.h">
       <Filter>vendor</Filter>
     </ClInclude>
-    <ClInclude Include="gfx\Renderer.h" />
-    <ClInclude Include="src\Application.h" />
+    <ClInclude Include="gfx\Model.h" />
     <ClInclude Include="gfx\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
@@ -86,11 +91,20 @@
     <ClCompile Include="entity\EntityManager.cpp">
       <Filter>entity</Filter>
     </ClCompile>
+    <ClCompile Include="gfx\Renderer.cpp">
+      <Filter>gfx</Filter>
+    </ClCompile>
     <ClCompile Include="gfx\TextureManager.cpp">
       <Filter>gfx</Filter>
     </ClCompile>
+    <ClCompile Include="misc\Input.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
     <ClCompile Include="shader\shader.cpp">
       <Filter>shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Application.cpp">
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
@@ -122,12 +136,7 @@
     <ClCompile Include="vendor\t.cpp">
       <Filter>vendor</Filter>
     </ClCompile>
-    <ClCompile Include="gfx\Renderer.cpp" />
-    <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="misc\Input.cpp" />
+    <ClCompile Include="gfx\Model.cpp" />
     <ClCompile Include="gfx\Mesh.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="img\weezer.png" />
   </ItemGroup>
 </Project>
