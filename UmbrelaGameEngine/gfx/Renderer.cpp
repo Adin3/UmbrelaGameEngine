@@ -11,16 +11,16 @@ glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 
 glm::vec3 cubePositions[] = {
-	glm::vec3(1.2f, 1.0f, 2.0f),
-	glm::vec3(0.0f,  0.0f,  0.0f),
-	glm::vec3(-1.5f, -2.2f, -2.5f),
-	glm::vec3(-3.8f, -2.0f, -12.3f),
-	glm::vec3(2.4f, -0.4f, -3.5f),
-	glm::vec3(-1.7f,  3.0f, -7.5f),
-	glm::vec3(1.3f, -2.0f, -2.5f),
-	glm::vec3(1.5f,  2.0f, -2.5f),
-	glm::vec3(1.5f,  0.2f, -1.5f),
-	glm::vec3(-1.3f,  1.0f, -1.5f)
+	glm::vec3(0.25f, 4.75f, -0.30f),
+	//glm::vec3(0.0f,  0.0f,  0.0f),
+	//glm::vec3(-1.5f, -2.2f, -2.5f),
+	//glm::vec3(-3.8f, -2.0f, -12.3f),
+	//glm::vec3(2.4f, -0.4f, -3.5f),
+	//glm::vec3(-1.7f,  3.0f, -7.5f),
+	//glm::vec3(1.3f, -2.0f, -2.5f),
+	//glm::vec3(1.5f,  2.0f, -2.5f),
+	//glm::vec3(1.5f,  0.2f, -1.5f),
+	//glm::vec3(-1.3f,  1.0f, -1.5f)
 };
 
 Renderer::Renderer()
@@ -136,8 +136,11 @@ void Renderer::GL_ENABLE()
 
 void Renderer::Draw(int w_width, int w_height, float deltaTime)
 {
+	//std::cout << cameraPos.x << " "<<cameraPos.y << " "<<cameraPos.z <<std::endl;
 	GLFWwindow* window = Application::GetWindow();
-	glfwSetCursorPosCallback(window, mouse_callback);
+	if(!Input::KeyboardInput(GLFW_KEY_LEFT_ALT, GLFW_REPEAT))
+		glfwSetCursorPosCallback(window, mouse_callback);
+
 	glm::mat4 view;
 	const float radius = 10.0f;
 	float camX = sin(glfwGetTime()) * radius;
@@ -153,11 +156,10 @@ void Renderer::Draw(int w_width, int w_height, float deltaTime)
 	glBindVertexArray(VAO);
 
 	glm::mat4 model = glm::mat4(1.0f);
-    float angle = sin(glfwGetTime()) * 100;
+    float angle = sin(glfwGetTime()) * 0;
 	glm::vec3 lightColor = {1.0f, 1.0f, 1.0f};
-	for (int i = 1; i <= 1; i++)
-	{
-		model = glm::translate(model, cubePositions[i]);
+		model = glm::translate(model, cubePositions[1]);
+		model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.01f));
 		//model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 		//ourShader->setVec3("lightColor", 1, glm::vec3(1.0f, 0.0f, 1.0f));
@@ -184,7 +186,6 @@ void Renderer::Draw(int w_width, int w_height, float deltaTime)
 		ourShader->setMat4("perspective", perspective);
 		ourModel->Draw(ourShader);
 		//glDrawArrays(GL_TRIANGLES, 0, 36);
-	}
 
 	lightShader->use();
 	glBindVertexArray(lightVAO);
@@ -230,34 +231,37 @@ void Renderer::Clear()
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-	if (firstMouse)
+	if (!Input::KeyboardInput(GLFW_KEY_LEFT_ALT, GLFW_REPEAT))
 	{
+		if (firstMouse)
+		{
+			lastX = xpos;
+			lastY = ypos;
+			firstMouse = false;
+		}
+
+		float xoffset = xpos - lastX;
+		float yoffset = lastY - ypos;
 		lastX = xpos;
 		lastY = ypos;
-		firstMouse = false;
+
+		float sensitivity = 0.1f;
+		xoffset *= sensitivity;
+		yoffset *= sensitivity;
+
+		yaw += xoffset;
+		pitch += yoffset;
+
+		if (pitch > 89.0f)
+			pitch = 89.0f;
+		if (pitch < -89.0f)
+			pitch = -89.0f;
+
+		glm::vec3 direction;
+		direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+		direction.y = sin(glm::radians(pitch));
+		direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+		cameraFront = glm::normalize(direction);
 	}
-
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos;
-	lastX = xpos;
-	lastY = ypos;
-
-	float sensitivity = 0.1f;
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
-
-	yaw += xoffset;
-	pitch += yoffset;
-
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
-
-	glm::vec3 direction;
-	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	direction.y = sin(glm::radians(pitch));
-	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-	cameraFront = glm::normalize(direction);
 }
 

@@ -7,8 +7,8 @@
 #include "../gfx/Renderer.h"
 #include "Application.h"
 
-const int WND_WIDTH = 1050;
-const int WND_HEIGHT = 1050;
+const int WND_WIDTH = 1800;
+const int WND_HEIGHT = 1000;
 
 void frameBuffer_size_callBack(GLFWwindow* window, GLuint height, GLuint width);
 

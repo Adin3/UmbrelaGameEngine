@@ -1,6 +1,6 @@
 //LIGHT FRAGMENT SHADER
 
-#version 450 core
+#version 330 core
 out vec4 FragColor;
 in vec3 Normal;
 uniform vec3 lightColor;

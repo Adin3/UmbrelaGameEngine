@@ -40,7 +40,6 @@ Application::~Application()
 
 void Application::Run()
 {
-	glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	m_Context->Clear();
 	onCreate();
 	IMGUI_CHECKVERSION();
@@ -48,7 +47,7 @@ void Application::Run()
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
-	ImGui_ImplOpenGL3_Init("#version 450");
+	ImGui_ImplOpenGL3_Init("#version 330");
 
 	while (!glfwWindowShouldClose(m_Window))
 	{
@@ -56,6 +55,11 @@ void Application::Run()
 		glfwSetWindowTitle(m_Window, ChangeTitle().c_str());
 		processInput(m_Window);
 
+		if (!Input::KeyboardInput(GLFW_KEY_LEFT_ALT, GLFW_REPEAT))
+			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		else
+			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		
 		m_Context->Clear();
 
 		ImGui_ImplGlfw_NewFrame();
@@ -65,9 +69,9 @@ void Application::Run()
 		m_Context->Draw(m_width, m_height, m_deltaTime);
 		onUpdate(m_deltaTime);
 
-		/*ImGui::Begin("Setari");
+		ImGui::Begin("Setari");
 		ImGui::Text("TEXT");
-		ImGui::End();*/
+		ImGui::End();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
