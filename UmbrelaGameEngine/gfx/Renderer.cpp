@@ -5,16 +5,24 @@ float lastX = 400, lastY = 300;
 float yaw = -90.0f, pitch = 0.0f;
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.5f, 5.0f);
+glm::vec3 cameraPos = glm::vec3(-3.0f, 3.5f, 1.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
+enum SceneNames
+{
+	Ceainic = 0,
+	Ghiozdan,
+	Noise,
+	Sponza,
+};
 
 glm::vec3 cubePositions[] = {
 	glm::vec3(0.25f, 4.75f, -0.30f),
-	//glm::vec3(0.0f,  0.0f,  0.0f),
-	//glm::vec3(-1.5f, -2.2f, -2.5f),
-	//glm::vec3(-3.8f, -2.0f, -12.3f),
+	glm::vec3(-0.4f, 3.75f, -3.0f),
+	glm::vec3(-0.4f, 3.75f, -3.0f),
+	glm::vec3(-0.4f, 1.75f, -3.0f),
+	glm::vec3(0.0f, 0.0f, 0.0f),
 	//glm::vec3(2.4f, -0.4f, -3.5f),
 	//glm::vec3(-1.7f,  3.0f, -7.5f),
 	//glm::vec3(1.3f, -2.0f, -2.5f),
@@ -25,9 +33,12 @@ glm::vec3 cubePositions[] = {
 
 Renderer::Renderer()
 {
-	ourShader = std::make_shared<Shader>("shader/rec/vshader.vs", "shader/rec/fshader.fs");
+	ObjShader = std::make_shared<Shader>("shader/rec/vshader.vs", "shader/rec/fshader.fs");
 	lightShader = std::make_shared<Shader>("shader/rec/lightvshader.vs", "shader/rec/lightfshader.fs");
-	ourModel = std::make_shared<Model>("img/sponza/Sponza.gltf");
+	ObjModel1 = std::make_shared<Model>("img/teapot/scene.gltf");
+	ObjModel2 = std::make_shared<Model>("img/ghiozdan/backpack.obj");
+	ObjModel3 = std::make_shared<Model>("img/noise/mount.blend1.blend");
+	ObjModel4 = std::make_shared<Model>("img/sponza/Sponza.gltf");
 
 	//diffuseMap = TextureManager::LoadTexture("img/container2.png");
 	//specularMap = TextureManager::LoadTexture("img/container4.png");
@@ -112,11 +123,11 @@ Renderer::Renderer()
 	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	//glEnableVertexAttribArray(1);
 
-	ourShader->use();
-	//ourShader->setVec3("lightColor", 1, glm::vec3(1.0f, 1.0f, 1.0f));
-	//ourShader->setVec3("objectColor", 1, glm::vec3(1.0f, 0.5f, 0.31f));
-	//ourShader->setInt("material.diffuse", 0);
-	//ourShader->setInt("material.specular", 1);
+	ObjShader->use();
+	//ObjShader->setVec3("lightColor", 1, glm::vec3(1.0f, 1.0f, 1.0f));
+	//ObjShader->setVec3("objectColor", 1, glm::vec3(1.0f, 0.5f, 0.31f));
+	//ObjShader->setInt("material.diffuse", 0);
+	//ObjShader->setInt("material.specular", 1);
 }
 
 Renderer::~Renderer()
@@ -134,7 +145,7 @@ void Renderer::GL_ENABLE()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void Renderer::Draw(int w_width, int w_height, float deltaTime)
+void Renderer::Draw(int w_width, int w_height, float deltaTime, int indexScene, int speed, float rotCoords[3])
 {
 	//std::cout << cameraPos.x << " "<<cameraPos.y << " "<<cameraPos.z <<std::endl;
 	GLFWwindow* window = Application::GetWindow();
@@ -152,40 +163,137 @@ void Renderer::Draw(int w_width, int w_height, float deltaTime)
 	//cubePositions[1].x = 1.0f + sin(glfwGetTime()) * 2.0f;
 	//cubePositions[1].y = sin(glfwGetTime() / 2.0f) * 1.0f;
 
-	ourShader->use();
+	ObjShader->use();
 	glBindVertexArray(VAO);
 
 	glm::mat4 model = glm::mat4(1.0f);
-    float angle = sin(glfwGetTime()) * 0;
-	glm::vec3 lightColor = {1.0f, 1.0f, 1.0f};
+	float angle = sin(glfwGetTime()) * speed;
+	glm::vec3 lightColor = { 1.0f, 1.0f, 1.0f };
+	glm::vec3 diffuseColor = lightColor * glm::vec3(0.7f); // decrease the influence
+	glm::vec3 ambientColor = diffuseColor * glm::vec3(0.35f); // low influence
+
+	//std::cout << rotCoords[0] << " " << rotCoords[1] << " " << rotCoords[2] << std::endl;
+
+	switch (indexScene)
+	{
+	case SceneNames::Ceainic :
 		model = glm::translate(model, cubePositions[1]);
-		model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.01f));
+		if(!(rotCoords[0]==rotCoords[1] && rotCoords[2]==rotCoords[1] && rotCoords[1]==0.0f))
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(rotCoords[0], rotCoords[1], rotCoords[2]));
+		model = glm::scale(model, glm::vec3(0.1f));
 		//model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-		//ourShader->setVec3("lightColor", 1, glm::vec3(1.0f, 0.0f, 1.0f));
-		//ourShader->setVec3("objectColor", 1, glm::vec3(1.0f, 0.5f, 0.31f));
-		ourShader->setVec3("viewPos", 1, cameraPos);
-		ourShader->setVec3("light.position", 1, cubePositions[0]);
+		//ObjShader->setVec3("lightColor", 1, glm::vec3(1.0f, 0.0f, 1.0f));
+		//ObjShader->setVec3("objectColor", 1, glm::vec3(1.0f, 0.5f, 0.31f));
+		ObjShader->setVec3("viewPos", 1, cameraPos);
+		ObjShader->setVec3("light.position", 1, cubePositions[0]);
 		//lightColor.x = sin(glfwGetTime() * 2.0f);
 		//lightColor.y = sin(glfwGetTime() * 0.7f);
 		//lightColor.z = sin(glfwGetTime() * 1.3f);
-		glm::vec3 diffuseColor = lightColor * glm::vec3(0.7f); // decrease the influence
-		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.35f); // low influence
-		ourShader->setVec3("light.ambient", 1, ambientColor);
-		ourShader->setVec3("light.diffuse", 1, diffuseColor);
-		ourShader->setVec3("light.specular", 1, { 1.0f, 1.0f, 1.0f });
-		ourShader->setFloat("light.constant", 1.0f);
-		ourShader->setFloat("light.linear", 0.045f);
-		ourShader->setFloat("light.quadratic", 0.0075f);
-		//ourShader->setVec3("material.ambient", 1, { 0.0f, 0.1f, 0.06f });
-		ourShader->setVec3("material.diffuse", 1, { 0.0f, 0.50980392f, 0.50980392f });
-		ourShader->setVec3("material.specular", 1, { 0.50196078f, 0.50196078f, 0.50196078f });
-		ourShader->setFloat("material.shininess", 32.0f);
-		ourShader->setMat4("model", model);
-		ourShader->setMat4("view", view);
-		ourShader->setMat4("perspective", perspective);
-		ourModel->Draw(ourShader);
+		ObjShader->setVec3("light.ambient", 1, ambientColor);
+		ObjShader->setVec3("light.diffuse", 1, diffuseColor);
+		ObjShader->setVec3("light.specular", 1, { 1.0f, 1.0f, 1.0f });
+		ObjShader->setFloat("light.constant", 1.0f);
+		ObjShader->setFloat("light.linear", 0.045f);
+		ObjShader->setFloat("light.quadratic", 0.0075f);
+		//ObjShader->setVec3("material.ambient", 1, { 0.0f, 0.1f, 0.06f });
+		ObjShader->setVec3("material.diffuse", 1, { 0.0f, 0.50980392f, 0.50980392f });
+		ObjShader->setVec3("material.specular", 1, { 0.50196078f, 0.50196078f, 0.50196078f });
+		ObjShader->setFloat("material.shininess", 32.0f);
+		ObjShader->setMat4("model", model);
+		ObjShader->setMat4("view", view);
+		ObjShader->setMat4("perspective", perspective);
+		ObjModel1->Draw(ObjShader);
+		break;
 		//glDrawArrays(GL_TRIANGLES, 0, 36);
+	case SceneNames::Ghiozdan:
+		model = glm::translate(model, cubePositions[2]);
+		if (!(rotCoords[0] == rotCoords[1] && rotCoords[2] == rotCoords[1] && rotCoords[1] == 0.0f))
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(rotCoords[0], rotCoords[1], rotCoords[2]));
+		model = glm::scale(model, glm::vec3(1.0f));
+		//model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+		//ObjShader->setVec3("lightColor", 1, glm::vec3(1.0f, 0.0f, 1.0f));
+		//ObjShader->setVec3("objectColor", 1, glm::vec3(1.0f, 0.5f, 0.31f));
+		ObjShader->setVec3("viewPos", 1, cameraPos);
+		ObjShader->setVec3("light.position", 1, cubePositions[0]);
+		//lightColor.x = sin(glfwGetTime() * 2.0f);
+		//lightColor.y = sin(glfwGetTime() * 0.7f);
+		//lightColor.z = sin(glfwGetTime() * 1.3f);
+		ObjShader->setVec3("light.ambient", 1, ambientColor);
+		ObjShader->setVec3("light.diffuse", 1, diffuseColor);
+		ObjShader->setVec3("light.specular", 1, { 1.0f, 1.0f, 1.0f });
+		ObjShader->setFloat("light.constant", 1.0f);
+		ObjShader->setFloat("light.linear", 0.045f);
+		ObjShader->setFloat("light.quadratic", 0.0075f);
+		//ObjShader->setVec3("material.ambient", 1, { 0.0f, 0.1f, 0.06f });
+		ObjShader->setVec3("material.diffuse", 1, { 0.0f, 0.50980392f, 0.50980392f });
+		ObjShader->setVec3("material.specular", 1, { 0.50196078f, 0.50196078f, 0.50196078f });
+		ObjShader->setFloat("material.shininess", 32.0f);
+		ObjShader->setMat4("model", model);
+		ObjShader->setMat4("view", view);
+		ObjShader->setMat4("perspective", perspective);
+		ObjModel2->Draw(ObjShader);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		break;
+	case SceneNames::Noise:
+		model = glm::translate(model, cubePositions[3]);
+		if (!(rotCoords[0] == rotCoords[1] && rotCoords[2] == rotCoords[1] && rotCoords[1] == 0.0f))
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(rotCoords[0], rotCoords[1], rotCoords[2]));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.5f));
+		//model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+		//ObjShader->setVec3("lightColor", 1, glm::vec3(1.0f, 0.0f, 1.0f));
+		//ObjShader->setVec3("objectColor", 1, glm::vec3(1.0f, 0.5f, 0.31f));
+		ObjShader->setVec3("viewPos", 1, cameraPos);
+		ObjShader->setVec3("light.position", 1, cubePositions[0]);
+		//lightColor.x = sin(glfwGetTime() * 2.0f);
+		//lightColor.y = sin(glfwGetTime() * 0.7f);
+		//lightColor.z = sin(glfwGetTime() * 1.3f);
+		ObjShader->setVec3("light.ambient", 1, ambientColor);
+		ObjShader->setVec3("light.diffuse", 1, diffuseColor);
+		ObjShader->setVec3("light.specular", 1, { 1.0f, 1.0f, 1.0f });
+		ObjShader->setFloat("light.constant", 1.0f);
+		ObjShader->setFloat("light.linear", 0.045f);
+		ObjShader->setFloat("light.quadratic", 0.0075f);
+		//ObjShader->setVec3("material.ambient", 1, { 0.0f, 0.1f, 0.06f });
+		ObjShader->setVec3("material.diffuse", 1, { 0.0f, 0.50980392f, 0.50980392f });
+		ObjShader->setVec3("material.specular", 1, { 0.50196078f, 0.50196078f, 0.50196078f });
+		ObjShader->setFloat("material.shininess", 32.0f);
+		ObjShader->setMat4("model", model);
+		ObjShader->setMat4("view", view);
+		ObjShader->setMat4("perspective", perspective);
+		ObjModel3->Draw(ObjShader);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		break;
+	case SceneNames::Sponza:
+		model = glm::translate(model, cubePositions[4]);
+		if (!(rotCoords[0] == rotCoords[1] && rotCoords[2] == rotCoords[1] && rotCoords[1] == 0.0f))
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(rotCoords[0], rotCoords[1], rotCoords[2]));
+		model = glm::scale(model, glm::vec3(0.01f));
+		//model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+		//ObjShader->setVec3("lightColor", 1, glm::vec3(1.0f, 0.0f, 1.0f));
+		//ObjShader->setVec3("objectColor", 1, glm::vec3(1.0f, 0.5f, 0.31f));
+		ObjShader->setVec3("viewPos", 1, cameraPos);
+		ObjShader->setVec3("light.position", 1, cubePositions[0]);
+		//lightColor.x = sin(glfwGetTime() * 2.0f);
+		//lightColor.y = sin(glfwGetTime() * 0.7f);
+		//lightColor.z = sin(glfwGetTime() * 1.3f);
+		ObjShader->setVec3("light.ambient", 1, ambientColor);
+		ObjShader->setVec3("light.diffuse", 1, diffuseColor);
+		ObjShader->setVec3("light.specular", 1, { 1.0f, 1.0f, 1.0f });
+		ObjShader->setFloat("light.constant", 1.0f);
+		ObjShader->setFloat("light.linear", 0.045f);
+		ObjShader->setFloat("light.quadratic", 0.0075f);
+		//ObjShader->setVec3("material.ambient", 1, { 0.0f, 0.1f, 0.06f });
+		ObjShader->setVec3("material.diffuse", 1, { 0.0f, 0.50980392f, 0.50980392f });
+		ObjShader->setVec3("material.specular", 1, { 0.50196078f, 0.50196078f, 0.50196078f });
+		ObjShader->setFloat("material.shininess", 32.0f);
+		ObjShader->setMat4("model", model);
+		ObjShader->setMat4("view", view);
+		ObjShader->setMat4("perspective", perspective);
+		ObjModel4->Draw(ObjShader);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		break;
+	}
 
 	lightShader->use();
 	glBindVertexArray(lightVAO);
@@ -223,9 +331,9 @@ void Renderer::Draw(int w_width, int w_height, float deltaTime)
 		cameraPos -= cameraUp * cameraSpeed;
 }
 
-void Renderer::Clear()
+void Renderer::Clear(float color[3])
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(color[0], color[1], color[2], 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

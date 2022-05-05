@@ -40,7 +40,12 @@ Application::~Application()
 
 void Application::Run()
 {
-	m_Context->Clear();
+	float color[3] = {0.0f, 0.0f, 0.0f};
+	float rotCoords[3] = { 0.0f, 0.0f, 0.0f};
+	const char* scenes[]{ "Ceainic", "Ghiozdan", "Noise", "Sponza" };
+	int speedRotation = 0.0f;
+	int indexScene = 0;
+	m_Context->Clear(color);
 	onCreate();
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -60,16 +65,22 @@ void Application::Run()
 		else
 			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		
-		m_Context->Clear();
+		m_Context->Clear(color);
 
 		ImGui_ImplGlfw_NewFrame();
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui::NewFrame();
 
-		m_Context->Draw(m_width, m_height, m_deltaTime);
+		m_Context->Draw(m_width, m_height, m_deltaTime, indexScene, speedRotation, rotCoords);
 		onUpdate(m_deltaTime);
 
 		ImGui::Begin("Setari");
+		ImGui::ColorEdit3("Culoare", color);
+		ImGui::SliderInt("Viteza de rotatie", &speedRotation, 0, 100);
+		ImGui::SliderFloat("Rotatie X", &rotCoords[0], 0.0f, 1.0f);
+		ImGui::SliderFloat("Rotatie Y", &rotCoords[1], 0.0f, 1.0f);
+		ImGui::SliderFloat("Rotatie Z", &rotCoords[2], 0.0f, 1.0f);
+		ImGui::ListBox("Scena", &indexScene, scenes, IM_ARRAYSIZE(scenes));
 		ImGui::Text("TEXT");
 		ImGui::End();
 
