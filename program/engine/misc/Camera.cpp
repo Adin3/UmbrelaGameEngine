@@ -1,8 +1,9 @@
 #include "Camera.h"
+#include <iostream>
 
 Camera::Camera() {
 	position   = glm::vec3(-3.0f, 3.5f, 1.0f);
-	front      = glm::vec3(0.0f, 0.0f, -1.0f);
+	front      = glm::vec3(0.79116, -0.60237, -0.531637);
 	up         = glm::vec3(0.0f, 1.0f, 0.0f);
 	yaw        = -90.0f;
 	pitch	   = 0.0f;
@@ -41,6 +42,9 @@ void Camera::processKeyboard(float deltaTime)
 }
 
 void Camera::processMouse(float xoffset, float yoffset) {
+	std::cout << "front " << front.x << " " << front.y << " " << front.z << std::endl;
+	std::cout << "up " << up.x << " " << up.y << " " << up.z << std::endl;
+
 	xoffset *= 0.1f;
 	yoffset *= 0.1f;
 

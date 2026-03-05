@@ -7,3 +7,4 @@ inline const fs::path ROOT = fs::current_path();
 
 #define MODEL(location)  (ROOT / "img"    / location).string()
 #define SHADER(location) (ROOT / "program/engine/shader/rec" / location).string()
+#define TEXTURE(location)  (ROOT / "res/tex"    / location).string()

@@ -6,12 +6,10 @@
 #include "../gfx/Renderer.h"
 #include "App.h"
 
-
 const int WND_WIDTH = 1200;
 const int WND_HEIGHT = 800;
 
 void frameBuffer_size_callBack(GLFWwindow* window, GLuint height, GLuint width);
-
 
 int main()
 {

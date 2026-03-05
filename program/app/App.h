@@ -2,6 +2,7 @@
 #include "../Engine/src/Application.h"
 #include "../scene/Scene.h"
 #include "../engine/src/Path.h"
+#include <reactphysics3d/reactphysics3d.h>
 
 class App : public Application {
 public:
@@ -13,4 +14,9 @@ public:
     void onDestroy()        override;
 
     std::shared_ptr<Scene> scene;
+    rp3d::PhysicsCommon    physicsCommon;
+    rp3d::PhysicsWorld*    world;
+    rp3d::RigidBody*       cubeBody;
+    rp3d::RigidBody*       planeBody;
+    float                  physicsAccumulator;
 };

@@ -40,6 +40,7 @@ void Mesh::Draw(std::shared_ptr<Shader>& shader)
 {
 	unsigned int diffuseNr = 1;
 	unsigned int specularNr = 1;
+
 	for (unsigned int i = 0; i < textures.size(); i++)
 	{
 		glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
@@ -51,7 +52,8 @@ void Mesh::Draw(std::shared_ptr<Shader>& shader)
 		else if (name == "texture_specular")
 			number = std::to_string(specularNr++);
 
-		shader->setFloat(("material." + name + number).c_str(), i);
+		glActiveTexture(GL_TEXTURE0);
+		shader->setInt("tex", i);
 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
 	}
 	glActiveTexture(GL_TEXTURE0);

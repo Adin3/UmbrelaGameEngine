@@ -2,10 +2,12 @@
 
 #version 330 core
 out vec4 FragColor;
-in vec3 Normal;
-uniform vec3 lightColor;
+in vec2 TexCoords;
+
+uniform sampler2D tex;
 
 void main()
-{
-    FragColor = vec4(lightColor, 1.0f); // set alle 4 vector values to 1.0
+{   
+    vec3 color = vec3(0.8, 0.8, 0.8) * vec3(texture(tex, TexCoords));
+    FragColor = vec4(color, 1.0);
 }

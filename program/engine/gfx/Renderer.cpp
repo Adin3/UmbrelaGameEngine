@@ -5,7 +5,6 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 Renderer::Renderer()
 {
-	
 }
 
 Renderer::~Renderer()
@@ -19,6 +18,7 @@ void Renderer::GL_ENABLE()
 	glEnable(GL_DEPTH_TEST);
     //glEnable(GL_FRAMEBUFFER_SRGB);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_MULTISAMPLE);
 }
 
 void Renderer::Draw(float deltaTime, Scene& scene, std::shared_ptr<Shader> overrideShader)
@@ -59,6 +59,7 @@ void Renderer::Draw(float deltaTime, Scene& scene, std::shared_ptr<Shader> overr
         }
 
         obj.model->Draw(shader);
+
     }
 }
 

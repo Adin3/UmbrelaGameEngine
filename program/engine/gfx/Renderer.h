@@ -8,6 +8,7 @@
 class Renderer {
 private:
 	GLFWwindow* m_context;
+
 public:
 	Renderer();
 	~Renderer();

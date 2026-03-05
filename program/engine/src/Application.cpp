@@ -47,7 +47,6 @@ void Application::Run()
 	while (!glfwWindowShouldClose(ctx()))
 	{
 		GetDeltaTime();
-		// glfwSetWindowTitle(ctx(), ChangeTitle().c_str());
 		processInput(ctx());
 		Input::Update();
 
@@ -64,7 +63,7 @@ void Application::Run()
 
 		onUpdate(m_deltaTime);
 
-		ImGui::Begin("Setari");
+		/*ImGui::Begin("Setari");
 		ImGui::ColorEdit3("Culoare", color);
 		ImGui::SliderInt("Viteza de rotatie", &speedRotation, 0, 100);
 		ImGui::SliderFloat("Rotatie X", &rotCoords[0], 0.0f, 1.0f);
@@ -72,7 +71,7 @@ void Application::Run()
 		ImGui::SliderFloat("Rotatie Z", &rotCoords[2], 0.0f, 1.0f);
 		ImGui::ListBox("Scena", &indexScene, scenes, IM_ARRAYSIZE(scenes));
 		ImGui::Text("TEXT");
-		ImGui::End();
+		ImGui::End();*/
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
