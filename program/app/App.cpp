@@ -9,6 +9,13 @@ void App::onCreate()
 {
     scene = std::make_shared<Scene>("Main");
 
+    rp3d::PhysicsWorld::WorldSettings settings;
+    settings.defaultVelocitySolverNbIterations = 20;
+    settings.isSleepingEnabled = false;
+    settings.gravity = rp3d::Vector3(0, -9.81, 0);
+
+    world = physicsCommon.createPhysicsWorld(settings);
+
     /*SceneObject sponza;
     sponza.name = "sponza";
     sponza.model = std::make_shared<Model>(MODEL("teapot/scene.gltf"));
@@ -19,25 +26,30 @@ void App::onCreate()
 
     scene->AddObject(sponza);*/
 
-    SceneObject cube;
-    cube.name = "cube";
-    cube.model = std::make_shared<Model>(std::vector<Mesh>{ MeshPrimitives::CreateCube(0.5f) });
-    cube.shader = std::make_shared<Shader>(
+    auto& cube = std::make_shared<Object>();
+    cube->SetName("cube");
+    cube->SetModel(std::make_shared<Model>(std::vector<Mesh>{ MeshPrimitives::CreateCube() }));
+    cube->SetShader(std::make_shared<Shader>(
         SHADER("lightvshader.vs"),
-        SHADER("lightfshader.fs"));
+        SHADER("lightfshader.fs")));
 
-    cube.position = glm::vec3(0.0, 1.0, 0.0);
+    cube->SetPosition(glm::vec3(0.0, 10.0, 0.0));
+    cube->SetScale(glm::vec3(1.0, 1.0, 1.0));
+    cube->createRigidBody(world, physicsCommon, rp3d::BodyType::DYNAMIC);
 
     scene->AddObject(cube);
 
-    SceneObject plane;
-    plane.name = "plane";
-    plane.model = std::make_shared<Model>(std::vector<Mesh>{ MeshPrimitives::CreatePlane(5.f) });
-    plane.shader = std::make_shared<Shader>(
+    auto& plane = std::make_shared<Object>();
+    plane->SetName("plane");
+    plane->SetModel(std::make_shared<Model>(std::vector<Mesh>{ MeshPrimitives::CreatePlane() }));
+    plane->SetShader(std::make_shared<Shader>(
         SHADER("lightvshader.vs"),
-        SHADER("lightfshader.fs"));
+        SHADER("lightfshader.fs")));
 
-    //plane.position = glm::vec3(1.0, 1.0, 1.0);
+    plane->SetPosition(glm::vec3(0.0, 1.0, 0.0));
+    plane->SetScale(glm::vec3(5.0, 0.01f, 5.0));
+    plane->createRigidBody(world, physicsCommon, rp3d::BodyType::STATIC);
+
     scene->AddObject(plane);
 
     /*Light sun;
@@ -51,25 +63,6 @@ void App::onCreate()
     glfwSetCursorPosCallback(win, mouse_callback);
 
     m_Context->SetWindow(win);
-
-    rp3d::PhysicsWorld::WorldSettings settings;
-    settings.defaultVelocitySolverNbIterations = 20;
-    settings.isSleepingEnabled = false;
-    settings.gravity = rp3d::Vector3(0, -9.81, 0);
-
-    world = physicsCommon.createPhysicsWorld(settings);
-
-    cubeBody = world->createRigidBody(
-        rp3d::Transform(rp3d::Vector3(0, 5, 0), rp3d::Quaternion::identity()));
-    cubeBody->setType(rp3d::BodyType::DYNAMIC);
-    rp3d::BoxShape* cubeShape = physicsCommon.createBoxShape(rp3d::Vector3(0.5f, 0.5f, 0.5f));
-    cubeBody->addCollider(cubeShape, rp3d::Transform::identity());
-
-    planeBody = world->createRigidBody(
-        rp3d::Transform(rp3d::Vector3(0, 0, 0), rp3d::Quaternion::identity()));
-    planeBody->setType(rp3d::BodyType::STATIC);
-    rp3d::BoxShape* planeShape = physicsCommon.createBoxShape(rp3d::Vector3(5.0f, 0.1f, 5.0f));
-    planeBody->addCollider(planeShape, rp3d::Transform::identity());
 }
 
 void App::onUpdate(float dt)
@@ -91,11 +84,12 @@ void App::onUpdate(float dt)
         physicsAccumulator -= physicsStep;
     }
 
-    rp3d::Transform t = cubeBody->getTransform();
-    rp3d::Vector3 pos = t.getPosition();
-    rp3d::Quaternion rot = t.getOrientation();
+    glm::vec3 pos = scene->objects[0]->GetWorldPosition();
+    std::cout << pos.y << std::endl;
 
-    scene->objects[0].position = glm::vec3(pos.x, pos.y, pos.z);
+    if (Input::KeyboardInput(GLFW_KEY_M, GLFW_PRESS)) {
+        scene->objects[0]->SetPosition(glm::vec3(0.0, 10.0, 0.0));
+    }
 }
 
 void App::onDestroy()

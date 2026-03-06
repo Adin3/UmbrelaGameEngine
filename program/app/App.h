@@ -3,6 +3,7 @@
 #include "../scene/Scene.h"
 #include "../engine/src/Path.h"
 #include <reactphysics3d/reactphysics3d.h>
+#include "entity/Object.h"
 
 class App : public Application {
 public:

@@ -42,9 +42,6 @@ void Camera::processKeyboard(float deltaTime)
 }
 
 void Camera::processMouse(float xoffset, float yoffset) {
-	std::cout << "front " << front.x << " " << front.y << " " << front.z << std::endl;
-	std::cout << "up " << up.x << " " << up.y << " " << up.z << std::endl;
-
 	xoffset *= 0.1f;
 	yoffset *= 0.1f;
 

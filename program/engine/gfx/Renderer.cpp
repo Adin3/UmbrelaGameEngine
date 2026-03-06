@@ -30,13 +30,9 @@ void Renderer::Draw(float deltaTime, Scene& scene, std::shared_ptr<Shader> overr
     glm::vec3 cameraPos = scene.camera.position;
 
     for (auto& obj : scene.objects) {
-        auto shader = overrideShader ? overrideShader : obj.shader;
+        auto shader = overrideShader ? overrideShader : obj->GetShader();
         shader->use();
-
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, obj.position);
-        model = glm::rotate(model, glm::radians(obj.rotationAngle), obj.rotationAxis);
-        model = glm::scale(model, obj.scale);
+        glm::mat4 model = obj->GetTransform();
 
         shader->setMat4("model", model);
         shader->setMat4("view", view);
@@ -45,21 +41,21 @@ void Renderer::Draw(float deltaTime, Scene& scene, std::shared_ptr<Shader> overr
 
         if (!scene.lights.empty()) {
             auto& light = scene.lights[0];
-            shader->setVec3("light.position", 1, light.position);
-            shader->setVec3("light.ambient", 1, light.ambient);
-            shader->setVec3("light.diffuse", 1, light.diffuse);
-            shader->setVec3("light.specular", 1, light.specular);
-            shader->setFloat("light.constant", light.constant);
-            shader->setFloat("light.linear", light.linear);
-            shader->setFloat("light.quadratic", light.quadratic);
+            shader->setVec3("light.position", 1, light->position);
+            shader->setVec3("light.ambient", 1, light->ambient);
+            shader->setVec3("light.diffuse", 1, light->diffuse);
+            shader->setVec3("light.specular", 1, light->specular);
+            shader->setFloat("light.constant", light->constant);
+            shader->setFloat("light.linear", light->linear);
+            shader->setFloat("light.quadratic", light->quadratic);
 
             shader->setVec3("material.diffuse", 1, { 0.0f, 0.50980392f, 0.50980392f });
             shader->setVec3("material.specular", 1, { 0.50196078f, 0.50196078f, 0.50196078f });
             shader->setFloat("material.shininess", 32.0f);
         }
 
-        obj.model->Draw(shader);
-
+        //obj->GetModel()->Draw(shader);
+        obj->Draw();
     }
 }
 

@@ -7,7 +7,7 @@
 class MeshPrimitives
 {
 public:
-    static Mesh CreateCube(float halfExtent = 0.5f)
+    static Mesh CreateCube(float halfExtent = 1.f)
     {
         std::vector<Vertex> vertices =
         {
@@ -60,7 +60,7 @@ public:
         return Mesh(vertices, indices, textures);
     }
 
-    static Mesh CreatePlane(float halfExtent = 10.0f)
+    static Mesh CreatePlane(float halfExtent = 1.0f)
     {
         std::vector<Vertex> vertices =
         {
